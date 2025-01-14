@@ -1,0 +1,33 @@
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.link__reverse {
+  text-decoration: underline;
+  color: inherit;
+}
+
+.link__reverse:hover {
+  text-decoration: none;
+}
+
+.color-green {
+  color: #6b9c36;
+}
+
+.color-white {
+  color: #ffffff;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.base-width {
+  width: 60%;
+}
