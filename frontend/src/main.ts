@@ -18,6 +18,9 @@ import './assets/main.css'
 import MainPageView from './views/MainPageView.vue'
 import ServicePageView from './views/ServicePageView.vue'
 import ContactsPageView from './views/ContactsPageView.vue'
+import TarifsPageView from './views/TarifsPageView.vue'
+import CustomersPageView from './views/CustomersPageView.vue'
+import OrderPageView from './views/OrderPageView.vue'
 
 const app = createApp(App)
 const vuetify = createVuetify({
@@ -30,12 +33,12 @@ const router = createRouter({
   routes: [
     { path: '/', component: MainPageView },
     { path: '/service', component: ServicePageView },
-    { path: '/tarifs', component: MainPageView },
-    { path: '/customers', component: MainPageView },
+    { path: '/tarifs', component: TarifsPageView },
+    { path: '/customers', component: CustomersPageView },
     { path: '/contacts', component: ContactsPageView },
-    { path: '/order', component: MainPageView },
+    { path: '/order', component: OrderPageView },
     { path: '/lk', component: MainPageView },
   ],
 })
 
-app.use(router).use(vuetify).use(router).mount('#app')
+app.use(router).use(vuetify).mount('#app')

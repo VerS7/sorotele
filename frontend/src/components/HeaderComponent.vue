@@ -23,7 +23,7 @@
   <v-container class="base-width">
     <v-container fluid class="d-flex">
       <v-col>
-        <v-img :width="330" src="src/assets/logo.jpg"></v-img>
+        <v-img :width="330" src="/logo.jpg"></v-img>
       </v-col>
       <v-col>
         <div id="contacts" class="d-flex flex-column justify-center">
@@ -31,7 +31,9 @@
             <v-icon :size="30" id="phone" class="mr-1">mdi-phone</v-icon>
             <a id="phone__number">8 (495) 99-111-08</a>
           </div>
-          <a href="" id="support__email" class="link">support@sorotele.com</a>
+          <a href="mailto:support@sorotele.com" id="support__email" class="link"
+            >support@sorotele.com</a
+          >
         </div>
       </v-col>
     </v-container>

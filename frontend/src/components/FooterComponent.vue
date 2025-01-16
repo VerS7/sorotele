@@ -36,8 +36,8 @@ footer {
         </div>
       </div>
       <div class="d-flex ml-15">
-        <v-img :width="110" class="ml-5" src="src/assets/lic1.jpg"> </v-img>
-        <v-img :width="110" class="ml-5" src="src/assets/lic2.jpg"> </v-img>
+        <v-img :width="110" class="ml-5" src="/lic1.jpg"> </v-img>
+        <v-img :width="110" class="ml-5" src="/lic2.jpg"> </v-img>
       </div>
     </v-container>
     <div id="footer__line" class="text-center">

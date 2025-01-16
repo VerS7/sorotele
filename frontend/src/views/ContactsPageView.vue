@@ -19,24 +19,26 @@
         <h2>ООО «Соро Телеком»</h2>
         <h3 class="mt-3 mb-3">Центральный офис</h3>
         <table>
-          <tr>
-            <td class="td__label">Адрес:</td>
-            <td>141840, Московская обл., Дмитровский р-н, д. Курово, д. 69</td>
-          </tr>
-          <tr>
-            <td class="td__label">Телефон:</td>
-            <td>8 (495) 99-111-08</td>
-          </tr>
-          <tr>
-            <td class="td__label">E-Mail:</td>
-            <td>
-              <a class="link__reverse color-green" href="mailto:i@sorotele.com">i@sorotele.com</a>
-            </td>
-          </tr>
-          <tr>
-            <td class="td__label">Время работы:</td>
-            <td>ПН-ПТ с 9:00 до 18:00 СБ-ВС Выходной</td>
-          </tr>
+          <tbody>
+            <tr>
+              <td class="td__label">Адрес:</td>
+              <td>141840, Московская обл., Дмитровский р-н, д. Курово, д. 69</td>
+            </tr>
+            <tr>
+              <td class="td__label">Телефон:</td>
+              <td>8 (495) 99-111-08</td>
+            </tr>
+            <tr>
+              <td class="td__label">E-Mail:</td>
+              <td>
+                <a class="link__reverse color-green" href="mailto:i@sorotele.com">i@sorotele.com</a>
+              </td>
+            </tr>
+            <tr>
+              <td class="td__label">Время работы:</td>
+              <td>ПН-ПТ с 9:00 до 18:00 СБ-ВС Выходной</td>
+            </tr>
+          </tbody>
         </table>
       </v-col>
       <v-col>

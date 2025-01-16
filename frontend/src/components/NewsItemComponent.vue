@@ -14,12 +14,12 @@
 </style>
 
 <template>
-  <v-container class="item">
+  <v-card class="item pa-3 ma-2">
     <h2 class="news__header color-green mb-5">{{ props.header }}</h2>
     <div class="news__content">
       <slot></slot>
     </div>
-  </v-container>
+  </v-card>
 </template>
 
 <script setup lang="ts">

@@ -34,7 +34,7 @@
           <v-container class="carousel__inner d-flex align-center justify-center">
             <v-container>
               <v-row>
-                <v-img class="fill-height" src="src/assets/banner1.jpg" />
+                <v-img class="fill-height" src="/banner1.jpg" />
               </v-row>
               <v-col class="mt-4">
                 <p class="text-center text-h5 font-weight-medium">
@@ -63,7 +63,7 @@
             class="carousel__inner d-flex align-center justify-center flex-column text-center"
           >
             <v-container class="align-center d-flex flex-row pa-10">
-              <v-img :width="270" src="src/assets/ban2.png" />
+              <v-img :width="270" src="/ban2.png" />
               <v-container class="align-center justify-center d-flex flex-column">
                 <p class="text-h5 mb-10">БЕСПРОЦЕНТНАЯ РАССРОЧКА ПРИ ПОДКЛЮЧЕНИИ</p>
                 <p class="mb-10 color-green">

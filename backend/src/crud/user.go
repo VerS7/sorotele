@@ -9,13 +9,19 @@ import (
 
 // Создание нового пользователя
 func CreateUser(db *gorm.DB, user database.User) {
-	go db.Create(&user)
+	db.Create(&user)
 }
 
 // Получить всех пользователей
 func GetAllUsers(db *gorm.DB) []database.User {
 	var users []database.User
-	go db.Find(&users)
+	db.Find(&users)
+	return users
+}
+
+func GetAllUsersByRoleName(db *gorm.DB, role string) []database.User {
+	var users []database.User
+	db.Joins("JOIN roles ON roles.id = users.role_id").Where("roles.name = ?", role).Find(&users)
 	return users
 }
 
