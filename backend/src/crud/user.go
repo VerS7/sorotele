@@ -26,10 +26,14 @@ func GetAllUsersByRoleName(db *gorm.DB, role string) []database.User {
 }
 
 // Получить пользователя по лицевому счёту
-func GetUserByAccount(db *gorm.DB, account string) database.User {
+func GetUserByAccount(db *gorm.DB, account string) (*database.User, error) {
 	var user database.User
-	go db.First(&user, "account = ?", account)
-	return user
+	if result := db.First(&user, "account = ?", account); result.Error != nil &&
+		result.Error == gorm.ErrRecordNotFound {
+		return nil, result.Error
+	}
+
+	return &user, nil
 }
 
 // Получить пользователя по токену доступа

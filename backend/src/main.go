@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -11,6 +11,7 @@ import (
 	"sorotele-backend/app"
 	"sorotele-backend/auth"
 	"sorotele-backend/email"
+	"sorotele-backend/payment"
 )
 
 func main() {
@@ -34,6 +35,11 @@ func main() {
 			SmtpPort:     os.Getenv("EMAIL_SMTP_PORT"),
 			SmtpHost:     os.Getenv("EMAIL_SMTP_HOST"),
 		},
+		payment.YooMoneyConfig{
+			Token:      os.Getenv("YOOMONEY_CLIENT_TOKEN"),
+			Reciever:   os.Getenv("YOOMONEY_RECIEVER"),
+			SuccessUrl: os.Getenv("SUCCESS_URL"),
+		},
 	)
 	if err != nil {
 		panic(err)
@@ -49,17 +55,11 @@ func main() {
 
 	go app.DBMigrate()
 
-	app.EmailController.SendMessage(
-		email.Message{
-			To:      []string{"thegoversus@gmail.com"},
-			Subject: "Test 1",
-			Body:    "Ещё один тест",
-		},
-	)
-
+	// Файловый сервер (Для Frontend)
 	fs := http.FileServer(http.Dir("../../frontend/dist"))
 
 	// Эндпоинты
+	//// Index
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		filePath := filepath.Join("../../frontend/dist", r.URL.Path)
 		if _, err := os.Stat(filePath); os.IsNotExist(err) {
@@ -68,15 +68,23 @@ func main() {
 		}
 		fs.ServeHTTP(w, r)
 	})
+	//// Авторизация
 	http.HandleFunc("/api/login", app.LoginHandler)
+	//// Запрос услуги на подключение
 	http.HandleFunc("/api/request", app.OrderHandler)
-	http.HandleFunc("/api/pay", func(w http.ResponseWriter, r *http.Request) {})
+	//// Оплата
+	http.HandleFunc("/api/pay", app.PaymentHandler)
+	//// Информация о пользователе
 	http.HandleFunc("/api/user", func(w http.ResponseWriter, r *http.Request) {})
+	//// Создание нового пользователя
 	http.HandleFunc("/api/user/create", func(w http.ResponseWriter, r *http.Request) {})
+	//// Обновление данных пользователя
 	http.HandleFunc("/api/user/update", func(w http.ResponseWriter, r *http.Request) {})
+	//// Удаление пользователя
 	http.HandleFunc("/api/user/delete", func(w http.ResponseWriter, r *http.Request) {})
 
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		fmt.Println("Ошибка при запуске сервера:", err)
+	//// Старт сервера
+	if err := http.ListenAndServe(":"+os.Getenv("BACKEND_PORT"), nil); err != nil {
+		log.Panicln("Ошибка при запуске сервера:", err)
 	}
 }

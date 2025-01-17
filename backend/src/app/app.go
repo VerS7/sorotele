@@ -9,12 +9,14 @@ import (
 	"sorotele-backend/crud"
 	"sorotele-backend/database"
 	"sorotele-backend/email"
+	"sorotele-backend/payment"
 )
 
 type App struct {
-	DB              *gorm.DB
-	HashIters       int
-	EmailController *email.EmailController
+	HashIters         int
+	DB                *gorm.DB
+	EmailController   *email.EmailController
+	PaymentController *payment.YooMoney
 }
 
 type AppConfig struct {
@@ -26,7 +28,7 @@ type AppConfig struct {
 }
 
 // Инициализация приложения
-func Init(ac AppConfig, ec email.EmailControllerConfig) (*App, error) {
+func Init(ac AppConfig, ec email.EmailControllerConfig, pc payment.YooMoneyConfig) (*App, error) {
 	db, err := database.DBConnect(
 		ac.DBHost,
 		ac.DBUsername,
@@ -45,7 +47,13 @@ func Init(ac AppConfig, ec email.EmailControllerConfig) (*App, error) {
 		return nil, err
 	}
 
-	return &App{DB: db, EmailController: emailController}, nil
+	paymentController, err := payment.YooMoneyInit(pc)
+	if err != nil {
+		log.Panicln("Ошибка при инициализации YooMoney платежей: ", err)
+		return nil, err
+	}
+
+	return &App{DB: db, EmailController: emailController, PaymentController: paymentController}, nil
 }
 
 func (a *App) DBMigrate() {

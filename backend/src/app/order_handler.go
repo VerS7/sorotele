@@ -40,5 +40,6 @@ func (a *App) OrderHandler(w http.ResponseWriter, r *http.Request) {
 			To:      a.EmailController.Config.Recepients,
 			Subject: "Новый запрос на обработку",
 			Body:    body,
-		})
+		},
+	)
 }
