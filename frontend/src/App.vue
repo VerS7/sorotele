@@ -5,22 +5,18 @@
 }
 
 main {
-  min-height: 100vh;
+  min-height: 70vh;
+  background-color: rgb(250, 250, 250);
 }
 </style>
 
 <template>
   <HeaderComponent></HeaderComponent>
-
-  <main class="mb-10">
+  <v-divider thickness="3"></v-divider>
+  <main>
     <RouterView />
-    <v-container class="base-width">
-      <v-divider class="mt-10" thickness="3"></v-divider>
-      <h4 class="text-h4 text-center mt-5">Новости</h4>
-      <NewsListComponent></NewsListComponent>
-    </v-container>
   </main>
-
+  <v-divider thickness="3"></v-divider>
   <FooterComponent></FooterComponent>
 </template>
 
@@ -28,5 +24,4 @@ main {
 import { RouterView } from 'vue-router'
 import FooterComponent from './components/FooterComponent.vue'
 import HeaderComponent from './components/HeaderComponent.vue'
-import NewsListComponent from './components/NewsListComponent.vue'
 </script>

@@ -82,5 +82,14 @@
         </v-carousel-item>
       </v-carousel>
     </v-container>
+    <v-container class="base-width">
+      <v-divider class="mt-10" thickness="3"></v-divider>
+      <h4 class="text-h4 text-center mt-5">Новости</h4>
+      <NewsListComponent></NewsListComponent>
+    </v-container>
   </article>
 </template>
+
+<script setup lang="ts">
+import NewsListComponent from '@/components/NewsListComponent.vue'
+</script>

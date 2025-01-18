@@ -9,14 +9,20 @@ import (
 )
 
 type PaymentRequest struct {
-	Account  string `json:"account"`
-	FullName string `json:"fullName"`
-	Email    string `json:"email"`
-	Sum      string `json:"sum"`
+	Account string `json:"account"`
+	Email   string `json:"email"`
+	Sum     string `json:"sum"`
+}
+
+type PaymentResponse struct {
+	Service string `json:"service"`
+	Link    string `json:"link"`
 }
 
 // Обработчик оплаты YouMoney
 func (a *App) PaymentHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	if r.Method != http.MethodPost {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
@@ -48,5 +54,5 @@ func (a *App) PaymentHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	http.Redirect(w, r, url.String(), http.StatusTemporaryRedirect)
+	json.NewEncoder(w).Encode(&PaymentResponse{Service: "Юmoney", Link: url.String()})
 }

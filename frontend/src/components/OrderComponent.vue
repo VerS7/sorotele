@@ -51,8 +51,10 @@
         <v-spacer></v-spacer>
         <div class="d-flex align-end flex-column">
           <v-btn
-            :color="sendError ? 'red' : 'gray'"
+            elevation="2"
+            class="font-weight-bold"
             @click="submit"
+            :color="sendError ? 'red' : 'gray'"
             :disabled="!isFormValid || !isRecaptchaValid"
             >Отправить заявку</v-btn
           >
@@ -122,6 +124,7 @@ async function submit(): Promise<void> {
   })
     .then(() => {
       confirmedFullName.value = fullName.value
+      sendError.value = false
       isDialogActive.value = true
       resetForm()
     })
