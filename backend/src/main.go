@@ -14,6 +14,19 @@ import (
 	"sorotele-backend/payment"
 )
 
+// Обертка для добавления заголовков CORS
+func AllowCORS(h func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type,  Authentication-Token")
+		if r.Method == http.MethodOptions {
+			return
+		}
+		h(w, r)
+	}
+}
+
 func main() {
 	// Загрузка параметров из .env файла
 	if err := godotenv.Load("../../.env"); err != nil {
@@ -69,13 +82,15 @@ func main() {
 		fs.ServeHTTP(w, r)
 	})
 	//// Авторизация
-	http.HandleFunc("/api/login", app.LoginHandler)
+	http.HandleFunc("/api/login", AllowCORS(app.LoginHandler))
 	//// Запрос услуги на подключение
 	http.HandleFunc("/api/request", app.OrderHandler)
 	//// Оплата
 	http.HandleFunc("/api/pay", app.PaymentHandler)
 	//// Информация о пользователе
-	http.HandleFunc("/api/user", func(w http.ResponseWriter, r *http.Request) {})
+	http.HandleFunc("/api/user", AllowCORS(app.UserDataHandler))
+	//// Информация о тарифах пользователя
+	http.HandleFunc("/api/user/rates", func(w http.ResponseWriter, r *http.Request) {})
 	//// Создание нового пользователя
 	http.HandleFunc("/api/user/create", func(w http.ResponseWriter, r *http.Request) {})
 	//// Обновление данных пользователя

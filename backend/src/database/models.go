@@ -10,7 +10,7 @@ import (
 type Rate struct {
 	gorm.Model
 	Name  string
-	Price float32
+	Price float64
 }
 
 // Арендованные тарифы
@@ -19,7 +19,6 @@ type RentedRate struct {
 	UserID   uint
 	User     User `gorm:"foreignKey:UserID"`
 	Adress   string
-	Balance  float32
 	LastPaid time.Time
 }
 
@@ -31,6 +30,7 @@ type User struct {
 	Name    string
 	Surname string
 	RoleID  uint
+	Balance float64
 	Role    Role `gorm:"foreignKey:RoleID"`
 }
 

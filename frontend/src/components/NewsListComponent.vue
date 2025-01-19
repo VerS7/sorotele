@@ -29,5 +29,5 @@
 </template>
 
 <script setup lang="ts">
-import NewsItemComponent from './NewsItemComponent.vue'
+import NewsItemComponent from '@/components/NewsItemComponent.vue'
 </script>

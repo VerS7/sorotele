@@ -7,6 +7,13 @@ import (
 	"gorm.io/gorm"
 )
 
+type UserData struct {
+	Account string `json:"account"`
+	Name    string `json:"name"`
+	Surname string `json:"surname"`
+	Role    string `json:"role"`
+}
+
 // Создание нового пользователя
 func CreateUser(db *gorm.DB, user database.User) {
 	db.Create(&user)
@@ -26,22 +33,34 @@ func GetAllUsersByRoleName(db *gorm.DB, role string) []database.User {
 }
 
 // Получить пользователя по лицевому счёту
-func GetUserByAccount(db *gorm.DB, account string) (*database.User, error) {
+func GetUserByAccount(db *gorm.DB, account string) (UserData, error) {
 	var user database.User
 	if result := db.First(&user, "account = ?", account); result.Error != nil &&
 		result.Error == gorm.ErrRecordNotFound {
-		return nil, result.Error
+		return UserData{}, result.Error
 	}
 
-	return &user, nil
+	return UserData{
+		Account: user.Account,
+		Name:    user.Name,
+		Surname: user.Surname,
+		Role:    user.Role.Name,
+	}, nil
 }
 
 // Получить пользователя по токену доступа
-func GetUserByToken(db *gorm.DB, token string) (database.User, error) {
+func GetUserByToken(db *gorm.DB, token string) (UserData, error) {
 	var user database.User
+
 	result := db.Preload("Role").First(&user, "token = ?", token)
 	if result.RowsAffected == 0 {
-		return user, errors.New("пользователь с данным токеном не найден")
+		return UserData{}, errors.New("пользователь с данным токеном не найден")
 	}
-	return user, nil
+
+	return UserData{
+		Account: user.Account,
+		Name:    user.Name,
+		Surname: user.Surname,
+		Role:    user.Role.Name,
+	}, nil
 }

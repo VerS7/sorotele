@@ -17,6 +17,10 @@
   justify-content: center;
   align-items: center;
 }
+
+#payment {
+  margin-right: 4.5rem;
+}
 </style>
 
 <template>
@@ -50,12 +54,13 @@
         <NavButtonComponent
           class="rounded-e-xl"
           title="Личный кабинет"
-          link-to="/lk"
+          link-to="/login"
           icon="mdi-account-circle"
         ></NavButtonComponent>
       </nav>
       <RouterLink
-        class="link__reverse color-green mt-1 mr-1 full-width text-end mr-15 mt-2"
+        id="payment"
+        class="link__reverse color-green mt-1 full-width text-end mt-2"
         to="/payment"
         >Пополнение счета онлайн</RouterLink
       >
