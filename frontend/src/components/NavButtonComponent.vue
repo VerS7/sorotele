@@ -35,10 +35,13 @@ const props = defineProps<ButtonProps>()
 interface ButtonProps {
   readonly title: string
   readonly linkTo: string
+  readonly linkRefered?: string
   readonly icon?: string
 }
 
 function buttonColor() {
-  return router.currentRoute.value.path == props.linkTo ? '#56831a' : '#6fa712'
+  return [props.linkTo, props.linkRefered].includes(router.currentRoute.value.path)
+    ? '#56831a'
+    : '#6fa712'
 }
 </script>

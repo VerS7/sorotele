@@ -1,10 +1,16 @@
 package database
 
 import (
-	"time"
-
 	"gorm.io/gorm"
 )
+
+// Платежи
+type History struct {
+	gorm.Model
+	Amount float64
+	UserID uint
+	User   User `gorm:"foreignKey:UserID"`
+}
 
 // Тариф
 type Rate struct {
@@ -16,10 +22,9 @@ type Rate struct {
 // Арендованные тарифы
 type RentedRate struct {
 	gorm.Model
-	UserID   uint
-	User     User `gorm:"foreignKey:UserID"`
-	Adress   string
-	LastPaid time.Time
+	UserID uint
+	User   User `gorm:"foreignKey:UserID"`
+	Adress string
 }
 
 // Пользователь
@@ -29,8 +34,8 @@ type User struct {
 	Token   string
 	Name    string
 	Surname string
+	Balance float64 `gorm:"default:0"`
 	RoleID  uint
-	Balance float64
 	Role    Role `gorm:"foreignKey:RoleID"`
 }
 
@@ -41,5 +46,5 @@ type Role struct {
 }
 
 func Migrate(db *gorm.DB) {
-	db.AutoMigrate(&Rate{}, &User{}, &Role{}, &RentedRate{})
+	db.AutoMigrate(&Rate{}, &User{}, &Role{}, &RentedRate{}, &History{})
 }

@@ -55,6 +55,7 @@
           class="rounded-e-xl"
           title="Личный кабинет"
           link-to="/login"
+          link-refered="/lk"
           icon="mdi-account-circle"
         ></NavButtonComponent>
       </nav>

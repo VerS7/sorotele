@@ -76,7 +76,7 @@ func (a *App) InitAdmin(admin auth.Credentials) {
 			Account: "0",
 			Token:   token,
 			Name:    "Admin",
-			Surname: "",
+			Surname: "Admin",
 			Role:    database.Role{Name: "Admin"},
 		})
 	}

@@ -16,9 +16,14 @@ export interface UserData {
   role: Role
 }
 
+export interface History {
+  amount: number
+  datetime: Date
+}
+
 export interface UserDynamicData {
   balance: string
-  lastPaid: Date | null
+  history: History[]
 }
 
 export interface RateData {
@@ -62,6 +67,11 @@ export function loadSessionUserData(): UserData {
 // Записывает данные пользователя в SessionStorage
 export function setSessionUserData(data: UserData) {
   sessionStorage.setItem('UserData', JSON.stringify(data))
+}
+
+// Удаляет данные пользоватяля в SessionStorage
+export function removeSessionUserData() {
+  sessionStorage.removeItem('UserData')
 }
 
 // Запрашивает токен доступа

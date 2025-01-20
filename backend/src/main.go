@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"log"
 	"net/http"
 	"os"
@@ -28,10 +29,17 @@ func AllowCORS(h func(http.ResponseWriter, *http.Request)) func(http.ResponseWri
 }
 
 func main() {
-	// Загрузка параметров из .env файла
-	if err := godotenv.Load("../../.env"); err != nil {
-		panic(err)
+	ENV_FILE := "../../.env"
+
+	// Загрузка параметров env параметров
+	if _, err := os.Stat(ENV_FILE); errors.Is(err, os.ErrNotExist) {
+		log.Println(ENV_FILE)
+	} else {
+		if err := godotenv.Load("../../.env"); err != nil {
+			log.Panicln(err)
+		}
 	}
+
 	// Инициализация приложения
 	app, err := app.Init(
 		app.AppConfig{
@@ -39,23 +47,25 @@ func main() {
 			DBUsername: os.Getenv("DB_USERNAME"),
 			DBPassword: os.Getenv("DB_PASSWORD"),
 			DBName:     os.Getenv("DB_NAME"),
-			SSL:        os.Getenv("SSL"),
+			SSL:        os.Getenv("DB_SSL"),
 		},
 		email.EmailControllerConfig{
 			UserEmail:    os.Getenv("EMAIL_FROM"),
 			UserPassword: os.Getenv("EMAIL_PASSWORD"),
-			Recepients:   []string{os.Getenv("EMAIL_TO")},
 			SmtpPort:     os.Getenv("EMAIL_SMTP_PORT"),
 			SmtpHost:     os.Getenv("EMAIL_SMTP_HOST"),
+			Recepients:   []string{os.Getenv("EMAIL_TO")},
 		},
 		payment.YooMoneyConfig{
-			Token:      os.Getenv("YOOMONEY_CLIENT_TOKEN"),
-			Reciever:   os.Getenv("YOOMONEY_RECIEVER"),
-			SuccessUrl: os.Getenv("SUCCESS_URL"),
+			Token:             os.Getenv("YOOMONEY_CLIENT_TOKEN"),
+			Reciever:          os.Getenv("YOOMONEY_RECIEVER"),
+			SuccessUrl:        os.Getenv("YOOMONEY_SUCCESS_URL"),
+			Secure:            os.Getenv("YOOMONEY_ENSURE_SECRET"),
+			RecievePaymentUrl: os.Getenv("YOOMONEY_PAYMENT_NOTIFICATION_URL"),
 		},
 	)
 	if err != nil {
-		panic(err)
+		log.Panicln(err)
 	}
 
 	// Инициализация админа, если таковой не существует
@@ -86,19 +96,22 @@ func main() {
 	//// Запрос услуги на подключение
 	http.HandleFunc("/api/request", app.OrderHandler)
 	//// Оплата
-	http.HandleFunc("/api/pay", app.PaymentHandler)
+	http.HandleFunc("/api/pay", AllowCORS(app.PaymentHandler))
 	//// Информация о пользователе
 	http.HandleFunc("/api/user", AllowCORS(app.UserDataHandler))
+	//// Доп. информация о пользователе
+	http.HandleFunc("/api/user/data", AllowCORS(app.UserDynamicDataHandler))
 	//// Информация о тарифах пользователя
 	http.HandleFunc("/api/user/rates", func(w http.ResponseWriter, r *http.Request) {})
 	//// Создание нового пользователя
-	http.HandleFunc("/api/user/create", func(w http.ResponseWriter, r *http.Request) {})
-	//// Обновление данных пользователя
-	http.HandleFunc("/api/user/update", func(w http.ResponseWriter, r *http.Request) {})
-	//// Удаление пользователя
-	http.HandleFunc("/api/user/delete", func(w http.ResponseWriter, r *http.Request) {})
+	http.HandleFunc("/api/user/create", AllowCORS(app.CreateUserHandler))
+	//// Уведомление от YooMoney. ВАЖНО для отображения оплаты
+	http.HandleFunc("/api/payment/notification", AllowCORS(app.PaymentNotificationHandler))
+	//// Списание средств с пользователя
+	http.HandleFunc("/api/payment/charge", AllowCORS(app.ChargeHandler))
 
-	//// Старт сервера
+	// Старт сервера
+	log.Println("Запуск сервера...")
 	if err := http.ListenAndServe(":"+os.Getenv("BACKEND_PORT"), nil); err != nil {
 		log.Panicln("Ошибка при запуске сервера:", err)
 	}
