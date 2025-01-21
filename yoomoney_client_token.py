@@ -5,9 +5,9 @@
 import requests
 
 # --- Пользовательские данные ---
-client_id = "ID КЛИЕНТА"
-redirect_uri = "REDIRECT URI ИЗ YOOMONEY SERVICES"
-client_secret = "OAUTH SECRET ПРИ НАЛИЧИИ"
+client_id = "<ID_КЛИЕНТА>"
+redirect_uri = "<REDIRECT_URI_ИЗ_YOOMONEY_SERVICES>"
+client_secret = "<OAUTH_SECRET_ПРИ_НАЛИЧИИ>"
 scope = [
     "account-info",
     "operation-history",
