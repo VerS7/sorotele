@@ -12,6 +12,7 @@ user = {
     "name": "<ИМЯ_ПОЛЬЗОВАТЕЛЯ>",
     "surname": "<ФАМИЛИЯ_ПОЛЬЗОВАТЕЛЯ>",
     "password": "<ПАРОЛЬ_ПОЛЬЗОВАТЕЛЯ>",
+    "rate_id": "<ID тарифа>",
 }  # Данные пользователя
 
 response = requests.post(api_url, headers=headers, json=user)
