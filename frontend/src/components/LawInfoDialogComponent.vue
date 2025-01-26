@@ -5,8 +5,8 @@ ul {
 </style>
 
 <template>
-  <v-dialog v-model="isDialogShown" max-width="820" persistent>
-    <v-card>
+  <v-dialog v-model="isDialogShown" transition="dialog-top-transition" max-width="820">
+    <v-card rounded="xl">
       <v-container class="pl-5 pr-5 pt-5 no-wrap">
         <h3 class="pb-2 text-center">Уважаемый абонент!</h3>
         <p class="pb-2">
@@ -50,8 +50,10 @@ ul {
         </ul>
       </v-container>
       <v-row class="ma-4 d-flex justify-end">
-        <v-btn class="mr-3" @click="router.push('/')">Закрыть</v-btn>
-        <v-btn @click="confirmDialog()">Принять</v-btn>
+        <v-btn class="mr-3" variant="flat" rounded="xl" elevation="0" @click="router.push('/')">
+          Закрыть
+        </v-btn>
+        <v-btn variant="flat" rounded="xl" elevation="0" @click="confirmDialog()">Принять</v-btn>
       </v-row>
     </v-card>
   </v-dialog>

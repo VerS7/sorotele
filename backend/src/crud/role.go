@@ -1,9 +1,9 @@
 package crud
 
 import (
-	"sorotele-backend/database"
-
 	"gorm.io/gorm"
+
+	"sorotele-backend/database"
 )
 
 // Создание новой роли

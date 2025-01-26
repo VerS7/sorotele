@@ -1,74 +1,53 @@
-<style scoped>
-#contacts {
-  color: #676153;
-  text-align: end;
-}
-
-#phone__number {
-  font-size: 1.5rem;
-}
-
-#support__email {
-  font-size: 1.17rem;
-}
-
-#phone {
-  color: #02d31e;
-  justify-content: center;
-  align-items: center;
-}
-
-#payment {
-  margin-right: 4.5rem;
-}
-</style>
-
 <template>
-  <v-container class="base-width pb-0">
-    <v-container fluid class="d-flex pb-0">
-      <v-col>
-        <v-img :width="330" src="/logo.jpg"></v-img>
-      </v-col>
-      <v-col class="d-flex align-end justify-end">
-        <v-card max-width="240" class="pa-2 rounded-lg" elevation="1">
-          <div id="contacts" class="d-flex flex-column justify-center">
-            <div class="d-flex justify-end align-center">
-              <v-icon :size="30" id="phone" class="mr-1">mdi-phone</v-icon>
-              <a id="phone__number">8 (495) 99-111-08</a>
-            </div>
-            <a href="mailto:support@sorotele.com" id="support__email" class="link"
-              >support@sorotele.com</a
-            >
-          </div>
-        </v-card>
-      </v-col>
-    </v-container>
-    <v-container class="d-flex align-center flex-column full-width" min-width="1100">
-      <nav>
-        <NavButtonComponent class="rounded-s-xl" title="Главная" link-to="/"> </NavButtonComponent>
-        <NavButtonComponent title="Услуги" link-to="/service"></NavButtonComponent>
-        <NavButtonComponent title="Тарифы" link-to="/tarifs"></NavButtonComponent>
-        <NavButtonComponent title="Абонентам" link-to="/customers"></NavButtonComponent>
-        <NavButtonComponent title="Заявка на подключение" link-to="/order"></NavButtonComponent>
-        <NavButtonComponent title="Контакты" link-to="/contacts"></NavButtonComponent>
-        <NavButtonComponent
-          class="rounded-e-xl"
-          title="Личный кабинет"
-          link-to="/login"
-          link-refered="/lk"
-          icon="mdi-account-circle"
-        ></NavButtonComponent>
-      </nav>
-      <RouterLink
-        id="payment"
-        class="link__reverse color-green mt-1 full-width text-end mt-2"
-        to="/payment"
-        >Пополнение счета онлайн</RouterLink
+  <v-container class="base-width d-flex flex-row align-center">
+    <v-row class="pa-4">
+      <a class="link tran-green mr-6 font-weight-medium" href="mailto:support@sorotele.com"
+        >support@sorotele.com</a
       >
-    </v-container>
+      <a class="link tran-green mr-3 font-weight-medium" href="tel:84959911108">8 495 991 11 08</a>
+      <v-spacer></v-spacer>
+      <NavButtonComponent class="font-weight-medium" link-to="/login">
+        <v-icon size="20" class="color-green mr-1">mdi-account</v-icon>
+        <span class="tran-green">Личный кабинет</span>
+      </NavButtonComponent>
+    </v-row>
   </v-container>
+  <v-divider></v-divider>
+  <v-container class="base-width">
+    <v-row class="pa-4 font-weight-medium" align="center">
+      <NavButtonComponent link-to="/">
+        <v-img
+          class="link mr-6"
+          draggable="false"
+          max-width="150"
+          width="150"
+          height="40"
+          src="/logo.png"
+        ></v-img>
+      </NavButtonComponent>
+      <v-icon class="link tran-green mr-6" size="30">mdi-menu</v-icon>
+      <NavButtonComponent class="mr-7 mt-n1" link-to="/service">Услуги</NavButtonComponent>
+      <NavButtonComponent class="mr-7 mt-n1" link-to="/tarifs">Тарифы</NavButtonComponent>
+      <NavButtonComponent class="mr-7 mt-n1" link-to="/customers">Абонентам</NavButtonComponent>
+      <NavButtonComponent class="mr-7 mt-n1" link-to="/order"
+        >Заявка на подключение</NavButtonComponent
+      >
+      <NavButtonComponent class="mr-7 mt-n1" link-to="/contacts">Контакты</NavButtonComponent>
+      <v-spacer></v-spacer>
+      <a class="link tran-green mt-n1" @click="isPaymentActive = true"> Пополнение счета онлайн </a>
+    </v-row>
+    <RouterBreadcrumbsComponent></RouterBreadcrumbsComponent>
+  </v-container>
+  <template>
+    <PaymentComponent v-model="isPaymentActive"></PaymentComponent>
+  </template>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import NavButtonComponent from '@/components/NavButtonComponent.vue'
+import RouterBreadcrumbsComponent from '@/components/RouterBreadcrumbsComponent.vue'
+import PaymentComponent from '@/components/PaymentComponent.vue'
+
+const isPaymentActive = ref(false)
 </script>

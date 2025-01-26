@@ -20,39 +20,75 @@ td {
 .tarifs {
   width: 55%;
 }
+
+.tarif__price {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.tarif__title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.tarif__additional {
+  font-weight: 300;
+}
 </style>
 
 <template>
   <v-container class="tarifs pt-0 pr-0 pl-0">
     <v-container class="d-flex flex-column">
-      <h2 class="text-h4 mb-5">Тарифы</h2>
-      <p class="mb-5">Зона 1. Подключение по радиоканалу</p>
       <v-container class="d-flex justify-center align-center">
-        <table>
-          <tbody>
-            <tr class="bgr-green">
-              <td>Тариф</td>
-              <td>Скорость подключения*</td>
-              <td>Абонентская плата (в месяц)</td>
-            </tr>
-            <tr class="bgr-gray">
-              <td>Единый безлимитный</td>
-              <td>до 40 Мбит/с</td>
-              <td>1100 руб.</td>
-            </tr>
-            <tr class="bgr-gray">
-              <td colspan="3">Статический IP адрес: 150 руб.</td>
-            </tr>
-            <tr class="bgr-gray">
-              <td colspan="3">Стоимость подключения: от 3 900 руб.</td>
-            </tr>
-          </tbody>
-        </table>
+        <v-hover v-slot="{ isHovering, props }">
+          <v-card
+            class="rounded-lg pa-5"
+            max-width="500"
+            v-bind="props"
+            :elevation="isHovering ? 24 : 7"
+          >
+            <v-card-title class="tarif__title">Единый безлимитный</v-card-title>
+            <v-card-subtitle>Подключение по радиоканалу</v-card-subtitle>
+            <v-card-text>
+              <p><b class="tarif__price mr-1">1100</b> руб./мес.</p>
+              <v-divider class="mt-4 mb-4"></v-divider>
+              <v-row class="mt-4">
+                <v-icon class="ml-2 mr-3">mdi-web</v-icon>
+                <p>Скорость интернета:</p>
+              </v-row>
+              <p class="ml-7 mt-4"><b>до 40 Мбит/с</b></p>
+              <p class="mt-5">Стоимость подключения: <b>от 3 900 руб.</b></p>
+              <p class="mt-2">Статический IP адрес: <b>150 руб.</b></p>
+              <p class="mt-5 tarif__additional">
+                Максимально возможная скорость подключения и цена подключения определяется
+                техническим обследованием и измерением уровня сигнала на месте подключения.
+              </p>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn
+                class="pa-6"
+                variant="flat"
+                color="green"
+                rounded="xl"
+                @click="model = true"
+                block
+                >Подключить</v-btn
+              >
+            </v-card-actions>
+          </v-card>
+        </v-hover>
       </v-container>
-      <p>
-        * - максимально возможная скорость подключения и цена подключения определяется техническим
-        обследованием и измерением уровня сигнала на месте подключения.
-      </p>
     </v-container>
   </v-container>
+  <template>
+    <OrderComponent v-model="model"></OrderComponent>
+  </template>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+
+import OrderComponent from '@/components/OrderComponent.vue'
+
+const model = ref(false)
+</script>

@@ -5,16 +5,19 @@
 }
 
 .news__header {
-  font-size: 1rem;
+  font-weight: 600;
+  font-size: 1.1rem;
 }
 
 .news__content {
   text-align: justify;
+  font-size: 0.9rem;
+  color: #757575;
 }
 </style>
 
 <template>
-  <v-card class="item pa-3 ma-2">
+  <v-card class="item pa-3 ma-2" elevation="0">
     <h2 class="news__header color-green mb-5">{{ props.header }}</h2>
     <div class="news__content">
       <slot></slot>

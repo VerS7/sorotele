@@ -46,6 +46,16 @@ func (a *App) PaymentNotificationHandler(w http.ResponseWriter, r *http.Request)
 	}
 	secret := r.FormValue("sha1_hash")
 
+	op, err := strconv.ParseUint(msg.OperationID, 10, 64)
+	if err != nil {
+		return
+	}
+
+	hs, _ := crud.GetHistoryByOperationID(a.DB, uint(op))
+	if hs != nil {
+		return
+	}
+
 	var unhashedSecret = []string{
 		msg.Type,
 		msg.OperationID,
@@ -76,7 +86,7 @@ func (a *App) PaymentNotificationHandler(w http.ResponseWriter, r *http.Request)
 
 	// Примитивная тразакция
 	err = func() error {
-		if err := crud.CreateHistoryAttachmentByAccount(a.DB, msg.Label, crud.HistoryData{Amount: am}); err != nil {
+		if err := crud.CreateHistoryAttachmentByAccount(a.DB, msg.Label, crud.HistoryData{Amount: am, OperationID: uint(op)}); err != nil {
 			return err
 		}
 		if err := crud.UpdateUserBalanceByAccount(a.DB, msg.Label, b.Balance+am); err != nil {

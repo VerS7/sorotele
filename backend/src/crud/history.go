@@ -1,7 +1,7 @@
 package crud
 
 import (
-	"log"
+	"errors"
 	"sorotele-backend/database"
 	"time"
 
@@ -9,7 +9,8 @@ import (
 )
 
 type HistoryData struct {
-	Amount float64 `json:"amount"`
+	Amount      float64 `json:"amount"`
+	OperationID uint    `json:"operation_id"`
 }
 
 type HistorySnapshot struct {
@@ -25,8 +26,9 @@ func CreateHistoryAttachmentByAccount(db *gorm.DB, account string, history Histo
 	}
 
 	if result := db.Create(&database.History{
-		Amount: history.Amount,
-		User:   user,
+		Amount:      history.Amount,
+		OperationID: history.OperationID,
+		User:        user,
 	}); result.Error != nil {
 		return result.Error
 	}
@@ -40,7 +42,6 @@ func GetHistoryByToken(db *gorm.DB, token string, limit int) ([]HistorySnapshot,
 
 	user, err := GetFullUserByToken(db, token)
 	if err != nil {
-		log.Println(err)
 		return snapshots, err
 	}
 
@@ -52,4 +53,18 @@ func GetHistoryByToken(db *gorm.DB, token string, limit int) ([]HistorySnapshot,
 		snapshots = append(snapshots, HistorySnapshot{Amount: elem.Amount, Datetime: elem.CreatedAt})
 	}
 	return snapshots, nil
+}
+
+// Запрос истории по айдишнику
+func GetHistoryByOperationID(db *gorm.DB, operationID uint) (*database.History, error) {
+	var history database.History
+
+	if result := db.Where("operation_id = ?", operationID).Find(&history); result.Error != nil || result.RowsAffected == 0 {
+		if result.Error != nil {
+			return nil, result.Error
+		} else {
+			return nil, errors.New("history with this operation_id not found")
+		}
+	}
+	return &history, nil
 }

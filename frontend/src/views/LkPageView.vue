@@ -16,9 +16,9 @@ import { loadAuthToken, removeAuthToken } from '@/account'
 const router = useRouter()
 
 try {
-  loadAuthToken() // Проверяем наличие токена
+  loadAuthToken()
 } catch {
-  removeAuthToken() // На всякий случай удаляем токен, даже если его нет :)
+  removeAuthToken()
   router.push('/login')
 }
 </script>

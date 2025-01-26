@@ -8,7 +8,7 @@
 </style>
 
 <template>
-  <v-container class="news__container">
+  <v-container class="news__container pr-0 pl-0">
     <NewsItemComponent header="Дарим в подарок до 30%">
       Уважаемые Абоненты! Теперь при пополнении счета, вы можете получить в подарок до 30% от суммы
       платежа! При пополнении на <b>6 месяцев - 10%</b>, на <b>12 месяцев - 20%</b> и на

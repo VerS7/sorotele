@@ -78,6 +78,7 @@ func (a *App) InitAdmin(admin auth.Credentials) {
 			Name:    "Admin",
 			Surname: "Admin",
 			Role:    database.Role{Name: "Admin"},
+			Rate:    database.Rate{Price: 0, Name: "Admin"},
 		})
 	}
 }

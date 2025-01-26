@@ -22,9 +22,9 @@ import ContactsPageView from '@/views/ContactsPageView.vue'
 import TarifsPageView from '@/views/TarifsPageView.vue'
 import CustomersPageView from '@/views/CustomersPageView.vue'
 import OrderPageView from '@/views/OrderPageView.vue'
-import PaymentPageView from '@/views/PaymentPageView.vue'
 import LoginPageView from '@/views/LoginPageView.vue'
 import LkPageView from '@/views/LkPageView.vue'
+import AdminPanelView from '@/views/AdminPanelView.vue'
 
 const app = createApp(App)
 const vuetify = createVuetify({
@@ -34,15 +34,15 @@ const vuetify = createVuetify({
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '/', component: MainPageView },
-    { path: '/service', component: ServicePageView },
-    { path: '/tarifs', component: TarifsPageView },
-    { path: '/customers', component: CustomersPageView },
-    { path: '/contacts', component: ContactsPageView },
-    { path: '/order', component: OrderPageView },
-    { path: '/payment', component: PaymentPageView },
-    { path: '/login', component: LoginPageView },
-    { path: '/lk', component: LkPageView },
+    { path: '/', name: 'Главная', component: MainPageView },
+    { path: '/service', name: 'Услуги', component: ServicePageView },
+    { path: '/tarifs', name: 'Тарифы', component: TarifsPageView },
+    { path: '/customers', name: 'Абонентам', component: CustomersPageView },
+    { path: '/contacts', name: 'Контакты', component: ContactsPageView },
+    { path: '/order', name: 'Заявка на подключение', component: OrderPageView },
+    { path: '/login', name: 'Вход', component: LoginPageView },
+    { path: '/lk', name: 'Личный кабинет', component: LkPageView },
+    { path: '/admin', name: 'Администрирование', component: AdminPanelView },
   ],
 })
 

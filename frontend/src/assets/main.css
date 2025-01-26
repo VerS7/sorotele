@@ -1,10 +1,11 @@
-.link {
-  text-decoration: none;
-  color: inherit;
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;
 }
 
-.link:hover {
-  text-decoration: underline;
+.link {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
 }
 
 .link__reverse {
@@ -30,10 +31,33 @@
 
 .full-width {
   width: 100%;
-  min-width: 800px;
+  min-width: 600px;
 }
 
 .base-width {
-  max-width: 60%;
-  min-width: 800px;
+  max-width: 1200px;
+  min-width: 600px;
+}
+
+.tran-green {
+  color: currentColor;
+  transition: color 0.2s ease;
+}
+
+.tran-green:hover {
+  color: #6b9c36;
+  transition: color 0.6s ease;
+}
+
+.fade-enter-active {
+  transition: all 0.5s ease;
+}
+
+.fade-leave-active {
+  transition: all 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }

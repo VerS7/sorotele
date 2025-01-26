@@ -8,15 +8,20 @@
   margin-top: 0.7rem;
   color: red;
 }
+
+h4 {
+  font-size: 2rem;
+  font-weight: 600;
+}
 </style>
 
 <template>
-  <v-card class="pa-2" elevation="10">
+  <v-card class="pa-2" elevation="5" rounded="xl">
     <v-form ref="form" v-model="isFormValid" lazy-validation>
-      <h4 class="text-center text-h4 mt-3 mb-5">Вход в личный кабинет</h4>
+      <h4 class="text-center mt-3 mb-5">Вход в личный кабинет</h4>
       <v-form ref="form" v-model="isFormValid" lazy-validation>
         <v-text-field
-          class="ml-3 mr-3"
+          class="mx-3"
           label="Номер вашего договора"
           placeholder="Например: sr001"
           density="compact"
@@ -25,9 +30,8 @@
           required
           :rules="[rules.required]"
         ></v-text-field>
-
         <v-text-field
-          class="ml-3 mr-3 mt-1"
+          class="mx-3 mt-1"
           label="Пароль"
           placeholder="Введите пароль"
           density="compact"
@@ -39,7 +43,6 @@
           :type="isPasswordVisible ? 'text' : 'password'"
           :rules="[rules.required]"
         ></v-text-field>
-
         <v-row class="ma-3 mt-1 mb-0">
           <div id="captcha__container">
             <VueRecaptcha
@@ -51,18 +54,23 @@
             ></VueRecaptcha>
           </div>
           <v-spacer></v-spacer>
-          <div class="d-flex align-end flex-column">
-            <v-btn
-              width="130"
-              elevation="2"
-              class="font-weight-bold"
-              @click="submit"
-              :color="requestError ? 'red' : 'gray'"
-              :disabled="!isFormValid || !isRecaptchaValid || !isSubmitEnabled"
-              >Войти</v-btn
-            >
-            <div v-if="requestError" id="error__label">Не удалось войти.</div>
-          </div>
+        </v-row>
+        <v-row class="px-5 pb-5 mt-5" justify="center">
+          <v-btn
+            class="font-weight-bold"
+            width="250"
+            height="45"
+            rounded="xl"
+            variant="flat"
+            @click="submit"
+            :color="requestError ? 'red' : 'green'"
+            :disabled="!isFormValid || !isRecaptchaValid || !isSubmitEnabled"
+          >
+            Войти
+          </v-btn>
+        </v-row>
+        <v-row class="mb-2 mt-n5" justify="center">
+          <div v-if="requestError" id="error__label">Не удалось войти.</div>
         </v-row>
       </v-form>
     </v-form>
@@ -70,8 +78,8 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits, ref } from 'vue'
-import type { VBtn, VForm } from 'vuetify/components'
+import { ref } from 'vue'
+import type { VForm } from 'vuetify/components'
 import { VueRecaptcha } from 'vue-recaptcha'
 
 import { requestAccessToken, setAuthToken } from '@/account'

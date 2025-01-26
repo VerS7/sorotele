@@ -29,16 +29,17 @@ func AllowCORS(h func(http.ResponseWriter, *http.Request)) func(http.ResponseWri
 }
 
 func main() {
-	ENV_FILE := "../../.env"
-
 	// Загрузка параметров env параметров
+	ENV_FILE := "../../.env"
 	if _, err := os.Stat(ENV_FILE); errors.Is(err, os.ErrNotExist) {
-		log.Println(ENV_FILE)
+		log.Println(".env файл по пути: " + ENV_FILE + " не найден.")
 	} else {
-		if err := godotenv.Load("../../.env"); err != nil {
-			log.Panicln(err)
+		if err := godotenv.Load(ENV_FILE); err != nil {
+			log.Println(err)
 		}
 	}
+
+	FRONTEND_DIR := os.Getenv("FRONTEND_PATH")
 
 	// Инициализация приложения
 	app, err := app.Init(
@@ -68,6 +69,8 @@ func main() {
 		log.Panicln(err)
 	}
 
+	go app.DBMigrate()
+
 	// Инициализация админа, если таковой не существует
 	go app.InitAdmin(
 		auth.Credentials{
@@ -76,17 +79,15 @@ func main() {
 		},
 	)
 
-	go app.DBMigrate()
-
 	// Файловый сервер (Для Frontend)
-	fs := http.FileServer(http.Dir("../../frontend/dist"))
+	fs := http.FileServer(http.Dir(FRONTEND_DIR))
 
 	// Эндпоинты
 	//// Index
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		filePath := filepath.Join("../../frontend/dist", r.URL.Path)
+		filePath := filepath.Join(FRONTEND_DIR, r.URL.Path)
 		if _, err := os.Stat(filePath); os.IsNotExist(err) {
-			http.ServeFile(w, r, "../../frontend/dist/index.html")
+			http.ServeFile(w, r, FRONTEND_DIR+"/index.html")
 			return
 		}
 		fs.ServeHTTP(w, r)
@@ -94,17 +95,19 @@ func main() {
 	//// Авторизация
 	http.HandleFunc("/api/login", AllowCORS(app.LoginHandler))
 	//// Запрос услуги на подключение
-	http.HandleFunc("/api/request", app.OrderHandler)
+	http.HandleFunc("/api/request", AllowCORS(app.OrderHandler))
 	//// Оплата
 	http.HandleFunc("/api/pay", AllowCORS(app.PaymentHandler))
 	//// Информация о пользователе
 	http.HandleFunc("/api/user", AllowCORS(app.UserDataHandler))
 	//// Доп. информация о пользователе
 	http.HandleFunc("/api/user/data", AllowCORS(app.UserDynamicDataHandler))
-	//// Информация о тарифах пользователя
-	http.HandleFunc("/api/user/rates", func(w http.ResponseWriter, r *http.Request) {})
 	//// Создание нового пользователя
 	http.HandleFunc("/api/user/create", AllowCORS(app.CreateUserHandler))
+	//// Создание нового тарифа
+	http.HandleFunc("/api/rate/create", AllowCORS(app.CreateRateHandler))
+	//// Получить все тарифы
+	http.HandleFunc("/api/rates", AllowCORS(app.GetRatesHandler))
 	//// Уведомление от YooMoney. ВАЖНО для отображения оплаты
 	http.HandleFunc("/api/payment/notification", AllowCORS(app.PaymentNotificationHandler))
 	//// Списание средств с пользователя

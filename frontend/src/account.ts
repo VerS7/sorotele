@@ -13,7 +13,23 @@ export interface UserData {
   account: string
   name: string
   surname: string
+  rateName: string
+  ratePrice: number
   role: Role
+}
+
+export interface NewUserData {
+  name: string
+  surname: string
+  role: Role
+  rateID: number
+}
+
+export interface NewUserResponse {
+  account: string
+  name: string
+  surname: string
+  token: string
 }
 
 export interface History {
@@ -24,11 +40,6 @@ export interface History {
 export interface UserDynamicData {
   balance: string
   history: History[]
-}
-
-export interface RateData {
-  price: string
-  adress: string
 }
 
 // Загружает токен доступа из Cookies
@@ -109,23 +120,6 @@ export async function getUserData(token: string): Promise<UserData> {
   return await response.json()
 }
 
-// Запрашивает тарифы пользователя
-export async function getUserRatesData(token: string): Promise<RateData[]> {
-  const response = await fetch(api + '/user/rates', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authentication-Token': token,
-    },
-  })
-
-  if (!response.ok) {
-    throw { error: new Error(`${response.statusText}`), code: response.status }
-  }
-
-  return await response.json()
-}
-
 // Запрашивает динамическую информацию пользователя (баланс и т.п.)
 export async function getUserDynamicData(token: string): Promise<UserDynamicData> {
   const response = await fetch(api + '/user/data', {
@@ -141,4 +135,20 @@ export async function getUserDynamicData(token: string): Promise<UserDynamicData
   }
 
   return await response.json()
+}
+
+// Создать пользователя
+export async function CreateNewUser(token: string, user: NewUserData): Promise<NewUserResponse> {
+  const response = await fetch(api + '/user/create', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authentication-Token': token,
+    },
+    body: JSON.stringify(user),
+  })
+  if (!response.ok) {
+    throw { error: new Error(`${response.statusText}`), code: response.status }
+  }
+  return response.json()
 }

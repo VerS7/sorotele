@@ -6,6 +6,7 @@ export interface OrderDetails {
 
 const api = import.meta.env.API_PATH
 
+// Отправляет заявку на подключение
 export async function sendOrder(details: OrderDetails): Promise<void> {
   const response = await fetch(api + '/request', {
     method: 'POST',

@@ -16,7 +16,7 @@ li::marker {
   <v-container class="base-width pl-15 pr-15 links__container">
     <ul class="pl-15 pr-15">
       <li>
-        <a href="/contract.doc" class="link__reverse color-green" target="_blank"
+        <a href="/contract.doc" class="link color-green" target="_blank"
           >Типовой абонентский договор</a
         >
       </li>

@@ -11,6 +11,7 @@ export interface PaymentResponse {
 
 const api = import.meta.env.API_PATH
 
+// Отправляет запрос на оплату
 export async function requestPayment(details: PaymentDetails): Promise<PaymentResponse> {
   const response = await fetch(api + '/pay', {
     method: 'POST',
