@@ -25,7 +25,6 @@
           src="/logo.png"
         ></v-img>
       </NavButtonComponent>
-      <v-icon class="link tran-green mr-6" size="30">mdi-menu</v-icon>
       <NavButtonComponent class="mr-7 mt-n1" link-to="/service">Услуги</NavButtonComponent>
       <NavButtonComponent class="mr-7 mt-n1" link-to="/tarifs">Тарифы</NavButtonComponent>
       <NavButtonComponent class="mr-7 mt-n1" link-to="/customers">Абонентам</NavButtonComponent>

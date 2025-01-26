@@ -60,7 +60,6 @@ func main() {
 		payment.YooMoneyConfig{
 			Token:             os.Getenv("YOOMONEY_CLIENT_TOKEN"),
 			Reciever:          os.Getenv("YOOMONEY_RECIEVER"),
-			SuccessUrl:        os.Getenv("YOOMONEY_SUCCESS_URL"),
 			Secure:            os.Getenv("YOOMONEY_ENSURE_SECRET"),
 			RecievePaymentUrl: os.Getenv("YOOMONEY_PAYMENT_NOTIFICATION_URL"),
 		},
@@ -69,7 +68,7 @@ func main() {
 		log.Panicln(err)
 	}
 
-	go app.DBMigrate()
+	app.DBMigrate()
 
 	// Инициализация админа, если таковой не существует
 	go app.InitAdmin(
@@ -93,21 +92,21 @@ func main() {
 		fs.ServeHTTP(w, r)
 	})
 	//// Авторизация
-	http.HandleFunc("/api/login", AllowCORS(app.LoginHandler))
+	http.HandleFunc("/api/login", app.LoginHandler)
 	//// Запрос услуги на подключение
-	http.HandleFunc("/api/request", AllowCORS(app.OrderHandler))
+	http.HandleFunc("/api/request", app.OrderHandler)
 	//// Оплата
 	http.HandleFunc("/api/pay", AllowCORS(app.PaymentHandler))
 	//// Информация о пользователе
-	http.HandleFunc("/api/user", AllowCORS(app.UserDataHandler))
+	http.HandleFunc("/api/user", app.UserDataHandler)
 	//// Доп. информация о пользователе
-	http.HandleFunc("/api/user/data", AllowCORS(app.UserDynamicDataHandler))
+	http.HandleFunc("/api/user/data", app.UserDynamicDataHandler)
 	//// Создание нового пользователя
 	http.HandleFunc("/api/user/create", AllowCORS(app.CreateUserHandler))
 	//// Создание нового тарифа
 	http.HandleFunc("/api/rate/create", AllowCORS(app.CreateRateHandler))
 	//// Получить все тарифы
-	http.HandleFunc("/api/rates", AllowCORS(app.GetRatesHandler))
+	http.HandleFunc("/api/rates", app.GetRatesHandler)
 	//// Уведомление от YooMoney. ВАЖНО для отображения оплаты
 	http.HandleFunc("/api/payment/notification", AllowCORS(app.PaymentNotificationHandler))
 	//// Списание средств с пользователя

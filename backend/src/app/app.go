@@ -53,7 +53,7 @@ func Init(ac AppConfig, ec email.EmailControllerConfig, pc payment.YooMoneyConfi
 		return nil, err
 	}
 
-	return &App{DB: db, EmailController: emailController, PaymentController: paymentController}, nil
+	return &App{HashIters: 10000, DB: db, EmailController: emailController, PaymentController: paymentController}, nil
 }
 
 func (a *App) DBMigrate() {

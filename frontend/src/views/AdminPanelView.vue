@@ -197,6 +197,7 @@ async function submitCreateNewUser() {
   await CreateNewUser(token.value, {
     name: newUserName.value,
     surname: newUserSurname.value,
+    password: newUserPassword.value,
     role: 'User',
     rateID: rateid,
   }).then((data) => (createdNewUserData.value = data))

@@ -1,0 +1,41 @@
+services:
+    db:
+        image: postgres:latest
+
+        restart: always
+
+        environment:
+            - POSTGRES_USER=${DB_USERNAME}
+            - POSTGRES_PASSWORD=${DB_PASSWORD}
+            - POSTGRES_DB=${DB_NAME}
+
+        ports:
+            - "5432:5432"
+
+        volumes:
+            - ./db:/var/lib/postgresql/data
+
+    adminer:
+        image: adminer:latest
+
+        restart: always
+
+        ports:
+            - 7777:8080
+
+    application:
+        build:
+            dockerfile: Dockerfile
+
+        image: sorotele-app
+
+        restart: always
+
+        env_file:
+            - .env
+
+        ports:
+            - "80:8080"
+
+        depends_on:
+            - db

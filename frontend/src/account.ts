@@ -21,6 +21,7 @@ export interface UserData {
 export interface NewUserData {
   name: string
   surname: string
+  password: string
   role: Role
   rateID: number
 }

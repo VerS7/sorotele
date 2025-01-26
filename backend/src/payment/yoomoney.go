@@ -17,7 +17,6 @@ type YooMoneyConfig struct {
 	Token             string
 	Secure            string
 	Reciever          string
-	SuccessUrl        string
 	RecievePaymentUrl string
 }
 
@@ -49,7 +48,6 @@ func (y *YooMoney) Quickpay(form QuickpayForm) (*url.URL, error) {
 	var baseUrl string = "https://yoomoney.ru/quickpay/confirm.xml"
 	data := url.Values{
 		"receiver":      []string{y.Config.Reciever},
-		"successUrl":    []string{y.Config.SuccessUrl},
 		"quickpay-form": []string{form.Form},
 		"paymentType":   []string{form.PaymentType},
 		"targets":       []string{form.Target},
